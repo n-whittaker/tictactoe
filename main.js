@@ -125,8 +125,8 @@ function createPlayer (name) {
 
     return {playerName, score}
 }
-
-gameController.createPlayers();
-gameController.playRound();
+//
+// gameController.createPlayers();
+// gameController.playRound();
 
 
