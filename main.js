@@ -49,12 +49,17 @@ const gameController = (function() {
 
     const checkGameWin = () => {
         if (player1.score === 3) {
-            console.log(`${player1.playerName} wins the game!`);
-            askNewGame();
+            displayController.displayMsg(`${player1.playerName} wins the game!`);
+            setTimeout(() => {
+                askNewGame();
+            }, 200)
+
 
         } else if (player2.score === 3){
-            console.log(`${player2.playerName} wins the game!`);
-            askNewGame();
+            displayController.displayMsg(`${player2.playerName} wins the game!`);
+            setTimeout(() => {
+                askNewGame();
+            }, 200)
         }
     }
 
@@ -78,7 +83,7 @@ const gameController = (function() {
         let input = location;
 
         if (!spaceAvailable(input)) {
-            alert("You cannot go there, try again");
+
         } else {
             gameBoard.board[input] = playerTurn;
             displayController.updateDisplay();
@@ -154,13 +159,13 @@ const gameController = (function() {
 
     const announceWinner = (winner) => {
         if (winner === 1) {
-            alert(`${player1.playerName} wins!`)
-            // i need to retrun somethingn here
+            displayController.displayMsg(`${player1.playerName} wins this round!`);
+
         } else if (winner === 2) {
-            alert(`${player2.playerName} wins!`)
+            displayController.displayMsg(`${player2.playerName} wins this round!`);
 
         } else if (winner === 0){
-            alert("it's a draw!");
+            displayController.displayMsg(`It's a draw!`);
         }
     }
 
@@ -254,13 +259,20 @@ const displayController = (function () {
         p1Score.textContent = "0";
         p2Score.textContent = "0";
         drawScore.textContent = "0";
+        displayMsg("First to 3 wins!")
 
 
     }
 
+    const displayMsg = (message) => {
+        const msgBox = document.querySelector(".messageBox");
+        msgBox.textContent = message;
+    }
 
 
-   return {updateDisplay, addEventListeners, showTurn, changeNames, updateScore, resetDisplay}
+
+
+   return {updateDisplay, addEventListeners, showTurn, changeNames, updateScore, resetDisplay, displayMsg}
 
 })();
 
