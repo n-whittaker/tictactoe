@@ -1,3 +1,4 @@
+
 const gameBoard = (function () {
 
     let board = [
@@ -6,10 +7,14 @@ const gameBoard = (function () {
         0, 0, 0];
 
     const resetBoard = function () {
-        board = [
-            0, 0, 0,
-            0, 0, 0,
-            0, 0, 0];
+
+        // for loop accesses the right instance of board instead of create a new instance.
+        for (let i = 0; i < board.length; i++) {
+            board[i] = 0;
+        }
+
+        console.log("Board reset:", board);  // Add logging to verify board reset
+
     }
 
     return {board, resetBoard}
@@ -20,64 +25,87 @@ const gameController = (function() {
     let activePlayer = 1;
     let player1 = {};
     let player2 = {};
+    let draws = 0;
 
+    const getActivePlayer = () =>{
+        return activePlayer
+    }
     const createPlayers = function () {
-        player1 = createPlayer(prompt("Enter player 1 name: "));
-        player2 = createPlayer(prompt("Enter player 2 name: "));
+        player1 = createPlayer(prompt("Enter player X name: "));
+        player2 = createPlayer(prompt("Enter player O name: "));
+
+        displayController.changeNames(player1.playerName, player2.playerName);
+
+    }
+
+    const takeTurn = function (playerTurn, location) {
+
+        let input = location;
+
+        if (!spaceAvailable(input)) {
+            alert("You cannot go there, try again");
+        } else {
+            gameBoard.board[input] = playerTurn;
+            displayController.updateDisplay();
+
+            let result = checkForResult();
+
+            if (result !== undefined) {
+                announceWinner(result);
+                takeScore(result);
+                gameBoard.resetBoard();
+                displayController.updateDisplay();  // Ensure this is called after resetBoard
+                activePlayer = 1;
+            }
+
+
+            switchTurn();
+        }
+
     }
 
 
-    const takeTurn = function (playerTurn) {
-        let input = prompt("Select location in array: ");
-        while (!spaceAvailable(input)) {
-            input = prompt("You cannot go there, select another location in array: ");
+    const announceWinner = (winner) => {
+        if (winner === 1) {
+            console.log(`${player1.playerName} wins!`)
+            // i need to retrun somethingn here
+        } else if (winner === 2) {
+            console.log(`${player2.playerName} wins!`)
+
+        } else if (winner === 0){
+            console.log("it's a draw!");
         }
-        gameBoard.board[input] = playerTurn;
-        console.log(gameBoard.board);
     }
 
     const switchTurn = function () {
         activePlayer =  (activePlayer === 1) ? 2 : 1;
-        console.log(`It is now player ${activePlayer}'s turn`);
+        displayController.showTurn(activePlayer);
     }
 
     const spaceAvailable = function (index) {
         return gameBoard.board[index] === 0;
     }
 
+    const playGame = () => {
+        createPlayers();
+        displayController.showTurn(activePlayer); // Initial show turn
+        playRound();
+    }
+
     const playRound = function () {
-
-
-        for (let i = 0; i < 9; i++) {
-            takeTurn(activePlayer);
-
-            const outcome = checkForResult();
-            console.log(outcome)
-
-            if (outcome === 1 || outcome === 2) {
-                console.log(`${player1.playerName} wins!`)
-                takeScore(outcome)
-                break;
-            } else if (outcome === 2) {
-                console.log(`${player1.playerName} wins!`)
-                takeScore(outcome)
-                break;
-            } else if (outcome === 0){
-                console.log("it's a draw!")
-                break;
-            }
-
-            switchTurn();
-        }
-
+        displayController.addEventListeners();
         gameBoard.resetBoard();
+        displayController.updateDisplay();
+
+
+
     }
 
     const checkForResult = function () {
         // Winning combinations
         const combinations = [
             [0, 1, 2], [3, 4, 5], [6, 7, 8],
-            [0, 3, 4], [1, 4, 7], [2, 5, 8],
+            [0, 3, 6], [1, 4, 7], [2, 5, 8],
             [0, 4, 8], [2, 4, 6]
         ]
 
@@ -108,13 +136,17 @@ const gameController = (function() {
             player1.score++;
         } else if (winner === 2) {
             player2.score++;
+        } else {
+            draws++;
         }
 
-        console.log(`${player1.playerName} score: ${player1.score}`)
-        console.log(`${player2.playerName} score: ${player2.score}`)
+        displayController.updateScore(player1.score, player2.score, draws);
     }
 
-    return {takeTurn, playRound, switchTurn, spaceAvailable, checkForResult, createPlayers, takeScore}
+
+
+    return {takeTurn, playRound, switchTurn, spaceAvailable, checkForResult, createPlayers, takeScore, getActivePlayer,
+        playGame}
 
 })();
 
@@ -126,7 +158,72 @@ function createPlayer (name) {
     return {playerName, score}
 }
 //
-// gameController.createPlayers();
-// gameController.playRound();
+
+const displayController = (function () {
+    const p1 = document.querySelector(".pOneName");
+    const p2 = document.querySelector(".pTwoName");
+
+
+    const updateDisplay = () => {
+       const cells = document.querySelectorAll(".cell");
+
+       cells.forEach((cell, index) => {
+           cell.textContent = gameBoard.board[index] === 0 ? "" : (gameBoard.board[index] === 1 ? "X" : "O");
+       })
+
+
+
+
+
+    }
+
+
+   const addEventListeners = () => {
+       const buttons = document.querySelectorAll(".cell");
+
+       buttons.forEach((btn) =>{
+           btn.addEventListener("click", (event) => {
+               const indexChosen = event.target.id;
+               gameController.takeTurn(gameController.getActivePlayer(), indexChosen);
+           })
+
+       })
+
+    }
+
+    const showTurn = (activePlayer) => {
+        if (activePlayer === 1) {
+            p1.style.color = "white";
+            p2.style.color = "#4f6367";
+        } else {
+            p1.style.color = "#4f6367";
+            p2.style.color = "white";
+        }
+    }
+
+    const changeNames = (p1name, p2name) => {
+        p1.textContent = p1name;
+        p2.textContent = p2name;
+    }
+
+    const updateScore = (p1, p2, draws) => {
+        const p1Score = document.querySelector(".p1Score");
+        const p2Score = document.querySelector(".p2Score");
+        const drawScore = document.querySelector(".drawScore");
+
+        p1Score.textContent = p1;
+        p2Score.textContent = p2;
+        drawScore.textContent = draws;
+    }
+
+
+
+   return {updateDisplay, addEventListeners, showTurn, changeNames, updateScore}
+
+})();
+
+gameController.playGame();
+
+
 
 

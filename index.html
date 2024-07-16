@@ -6,24 +6,24 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="./styles.css">
-    <script src="./main.js"></script>
+
     <title>Tic Tac Toe</title>
 </head>
 <body>
     <div class="main-container">
         <div class="board-container">
             <div class="board-grid">
-                <div class="cell top-left"></div>
-                <div class="cell top-mid"></div>
-                <div class="cell top-right"></div>
+                <button class="cell top-left" id="0"></button>
+                <button class="cell top-mid" id="1"></button>
+                <button class="cell top-right" id="2"></button>
 
-                <div class="cell mid-left"></div>
-                <div class="cell mid-mid"></div>
-                <div class="cell mid-right"></div>
+                <button class="cell mid-left" id="3"></button>
+                <button class="cell mid-mid" id="4"></button>
+                <button class="cell mid-right" id="5"></button>
 
-                <div class="cell bottom-left"></div>
-                <div class="cell bottom-mid"></div>
-                <div class="cell bottom-right"></div>
+                <button class="cell bottom-left" id="6"></button>
+                <button class="cell bottom-mid" id="7"></button>
+                <button class="cell bottom-right" id="8"></button>
             </div>
 
         </div>
@@ -33,11 +33,11 @@
             <h1 class="score-header">Draw</h1>
             <h1 class="score-header">O: <span class="pTwoName">Player 2</span></h1>
 
-            <h2 class="score-text">0</h2>
-            <h2 class="score-text">0</h2>
-            <h2 class="score-text">0</h2>
+            <h2 class="score-text p1Score">0</h2>
+            <h2 class="score-text drawScore">0</h2>
+            <h2 class="score-text p2Score">0</h2>
         </div>
     </div>
-
+    <script src="./main.js" ></script>
 </body>
 </html>
