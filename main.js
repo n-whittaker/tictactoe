@@ -26,6 +26,7 @@ const gameController = (function() {
     let draws = 0;
 
     const playGame = () => {
+        displayController.showModal();
         displayController.resetDisplay();
         activePlayer = 1;
         playRound();
@@ -203,6 +204,8 @@ const displayController = (function () {
     const p2Score = document.querySelector(".p2Score");
     const drawScore = document.querySelector(".drawScore");
     const modal = document.querySelector(".modal");
+    const player1name = document.querySelector("#player-x-name-input");
+    const player2name = document.querySelector("#player-o-name-input");
 
 
 
@@ -221,11 +224,12 @@ const displayController = (function () {
 
 
    const addEventListeners = () => {
-        const startBtn = document.querySelector(".startBtn");
+        const newGameBtn = document.querySelector(".newGameBtn");
         const buttons = document.querySelectorAll(".cell");
         const modal = document.querySelector(".modal");
-        const modalStart= document.querySelector(".modal-start");
         const modalForm = document.querySelector(".modal-form");
+
+
 
        buttons.forEach((btn) =>{
            btn.addEventListener("click", (event) => {
@@ -235,14 +239,13 @@ const displayController = (function () {
 
        })
 
-       startBtn.addEventListener("click", () => {
+       newGameBtn.addEventListener("click", () => {
            gameController.playGame();
        })
 
        modalForm.addEventListener("submit", (event) => {
            event.preventDefault()  // SUbmitting form was reloading page by default
-           const player1name = document.querySelector("#player-x-name-input");
-           const player2name = document.querySelector("#player-o-name-input");
+
 
 
 
@@ -294,12 +297,19 @@ const displayController = (function () {
         msgBox.textContent = message;
     }
 
+    const showModal = () => {
+        player1name.value = "";
+        player2name.value = "";
+        modal.style.display = "flex";
+
+    }
 
 
 
 
 
-   return {updateDisplay, addEventListeners, showTurn, changeNames, updateScore, resetDisplay, displayMsg}
+
+   return {updateDisplay, addEventListeners, showTurn, changeNames, updateScore, resetDisplay, displayMsg, showModal}
 
 })();
 

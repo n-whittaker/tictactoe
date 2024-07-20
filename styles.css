@@ -150,7 +150,7 @@ body {
     text-align: center;
 }
 
-.startBtn {
+.newGameBtn {
     align-self: center;
     justify-self: center;
     grid-column: 2;
