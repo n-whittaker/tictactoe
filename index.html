@@ -10,6 +10,9 @@
     <title>Tic Tac Toe</title>
 </head>
 <body>
+    div.
+
+
     <div class="main-container">
         <div class="board-container">
             <h1 class="messageBox">First to 3 wins!</h1>
@@ -37,8 +40,49 @@
             <h2 class="score-text p1Score">0</h2>
             <h2 class="score-text drawScore">0</h2>
             <h2 class="score-text p2Score">0</h2>
+
+            <button class="startBtn">Start Game</button>
+
+        </div>
+
+
+
+
+    </div>
+
+    <div class="modal" id="namesModal">
+        <div class="modal-content">
+
+            <p>Enter player names: </p>
+
+            <form action="" class="modal-form">
+                <div class="name-container">
+                    <label for="player-x-name-input">Player X: </label>
+                    <input type="text" id="player-x-name-input" name="player-x-name-input" class="name-input" required>
+                </div>
+
+                <div class="name-container">
+                    <label for="player-o-name-input">Player O: </label>
+                    <input type="text" id="player-o-name-input" name="player-o-name-input" class="name-input" required>
+                </div>
+
+                <button type="submit" class="modal-start">
+                    Start game
+                </button>
+
+            </form>
+
+
+
+
+
+
+
+
         </div>
     </div>
+
+
     <script src="./main.js" ></script>
 </body>
 </html>

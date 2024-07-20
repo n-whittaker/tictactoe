@@ -13,8 +13,6 @@ const gameBoard = (function () {
             board[i] = 0;
         }
 
-        console.log("Board reset:", board);  // Add logging to verify board reset
-
     }
 
     return {board, resetBoard}
@@ -29,7 +27,7 @@ const gameController = (function() {
 
     const playGame = () => {
         displayController.resetDisplay();
-        displayController.addEventListeners();
+        activePlayer = 1;
         playRound();
 
         setTimeout(() => {
@@ -63,10 +61,11 @@ const gameController = (function() {
         }
     }
 
-    const createPlayers = function () {
-        player1 = createPlayer(prompt("Enter player X name: "));
-        player2 = createPlayer(prompt("Enter player O name: "));
+    const createPlayers = function (plr1, plr2) {
+        player1 = createPlayer(plr1);
+        player2 = createPlayer(plr2);
 
+        console.log(player1.playerName, player2.playerName);
         displayController.changeNames(player1.playerName, player2.playerName);
     }
 
@@ -203,6 +202,8 @@ const displayController = (function () {
     const p1Score = document.querySelector(".p1Score");
     const p2Score = document.querySelector(".p2Score");
     const drawScore = document.querySelector(".drawScore");
+    const modal = document.querySelector(".modal");
+
 
 
     const updateDisplay = () => {
@@ -220,7 +221,11 @@ const displayController = (function () {
 
 
    const addEventListeners = () => {
-       const buttons = document.querySelectorAll(".cell");
+        const startBtn = document.querySelector(".startBtn");
+        const buttons = document.querySelectorAll(".cell");
+        const modal = document.querySelector(".modal");
+        const modalStart= document.querySelector(".modal-start");
+        const modalForm = document.querySelector(".modal-form");
 
        buttons.forEach((btn) =>{
            btn.addEventListener("click", (event) => {
@@ -229,6 +234,26 @@ const displayController = (function () {
            })
 
        })
+
+       startBtn.addEventListener("click", () => {
+           gameController.playGame();
+       })
+
+       modalForm.addEventListener("submit", (event) => {
+           event.preventDefault()  // SUbmitting form was reloading page by default
+           const player1name = document.querySelector("#player-x-name-input");
+           const player2name = document.querySelector("#player-o-name-input");
+
+
+
+           gameController.createPlayers(player1name.value, player2name.value);
+
+           modal.style.display = "none";
+
+
+       })
+
+
 
     }
 
@@ -272,12 +297,14 @@ const displayController = (function () {
 
 
 
+
+
    return {updateDisplay, addEventListeners, showTurn, changeNames, updateScore, resetDisplay, displayMsg}
 
 })();
 
-gameController.playGame();
-
+// gameController.playGame();
+displayController.addEventListeners();
 
 
 
