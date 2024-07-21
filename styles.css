@@ -60,7 +60,6 @@ table {
     --btn-background-color: #4d4d4d;
     --btn-hover-color: #a6a6a6;
     --input-border-color: #d5d5d5;
-
 }
 
 
@@ -73,7 +72,6 @@ body {
     justify-content: center;
     align-items: center;
     color: var(--text-color);
-
 }
 
 .main-container {
@@ -154,15 +152,12 @@ body {
     align-items: center;
     text-align: center;
     gap: 3%;
-
-
 }
 
 .newGameBtn {
     align-self: center;
     justify-self: center;
     grid-column: 2;
-
     width: fit-content;
     height: fit-content;
     border: none;
@@ -170,14 +165,13 @@ body {
     background-color: var(--btn-background-color);
     color: var(--btn-text-color);
     font-size: 0.7rem;
-
     margin: 3%;
     padding: 3%;
 
 }
 
 .newGameBtn:hover {
-    background-color: var(--cell-color);
+    background-color: var(--btn-hover-color);
     cursor: pointer;
 }
 
