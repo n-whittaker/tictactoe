@@ -252,11 +252,11 @@ const displayController = (function () {
     // Shows whose turn it is by changing the color of player names.
     const showTurn = (activePlayer) => {
         if (activePlayer === 1) {
-            p1.style.color = "white";
+            p1.style.color = "#a4a4a4";
             p2.style.color = "#4f6367";
         } else {
             p1.style.color = "#4f6367";
-            p2.style.color = "white";
+            p2.style.color = "#a4a4a4";
         }
     }
 
