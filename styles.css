@@ -47,14 +47,23 @@ table {
 :root {
     font-family: "Helvetica Neue", serif;
     font-size: 25px;
-    --background-color: #4f6367;
-    --container-color: #b8d8d8;
-    --cell-color: #7a9e9f;
-    --cell-text-color: #ffffff;
-    --text-color: #4f6367;
-
+    --background-color: #ffffff;
+    --container-color: #ffffff;
+    --cell-color: rgba(255, 255, 255, 0.51);
+    --cell-hover-color: rgba(233, 236, 239, 0.3);
+    --cell-text-color: #7a7a7a;
+    --text-color: #646464;
     --cell-border-radius: 20px;
+    --modal-background-color: rgba(52, 52, 52, 0.45);
+    --modal-main-color: #ffffff;
+    --btn-text-color: white;
+    --btn-background-color: #4d4d4d;
+    --btn-hover-color: #a6a6a6;
+    --input-border-color: #d5d5d5;
+
 }
+
+
 
 body {
     width: 100vw;
@@ -68,19 +77,20 @@ body {
 }
 
 .main-container {
-    width: clamp(300px, 40%, 800px);
-    height: clamp(600px, 80%, 900px);
+    width: clamp(300px, 80%, 700px);
     background-color: var(--container-color);
     display: flex;
     flex-direction: column;
     border-radius: 30px;
-
+    gap: 20px;
+    padding: 20px;
+    box-shadow: rgba(17, 12, 46, 0.15) 0px 48px 100px 0px;
 }
+
 
 .board-container {
     width: 100%;
     height: 100%;
-    /*border: 1px solid black;*/
     flex: 4;
     display: flex;
     flex-direction: column;
@@ -92,31 +102,28 @@ body {
 .board-grid {
     width: 80%;
     aspect-ratio: 1/1;
-    /*border: 2px solid black;*/
     display: grid;
     grid-template-rows: repeat(3, 1fr);
     grid-template-columns: repeat(3, 1fr);
-    gap: 10px;
+    gap: 0px;
+    box-shadow: rgba(50, 50, 93, 0.1) 0px 30px 60px -12px inset, rgba(0, 0, 0, 0.1) 0px 10px 36px -10px inset;
+    border-radius: var(--cell-border-radius);
 }
 
 .cell {
     width: 100%;
     height: 100%;
-
     background-color: var(--cell-color);
     display: flex;
     justify-content: center;
     align-items: center;
-
     font-size: 60px;
     color: var(--cell-text-color);
-
-    border: none;
-
+    border: 0.5px solid rgb(239, 239, 239);
 }
 
 .cell:hover {
-    background-color: rgba(122, 158, 159, 0.45);
+    background-color: var(--cell-hover-color);
 }
 
 
@@ -139,43 +146,57 @@ body {
 .score-container {
     width: 100%;
     height: 100%;
-
     flex: 1;
-
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: repeat(3, 1fr);
     justify-content: center;
     align-items: center;
     text-align: center;
+    gap: 3%;
+
+
 }
 
 .newGameBtn {
     align-self: center;
     justify-self: center;
     grid-column: 2;
+
+    width: fit-content;
+    height: fit-content;
+    border: none;
+    border-radius: 3px;
+    background-color: var(--btn-background-color);
+    color: var(--btn-text-color);
+    font-size: 0.7rem;
+
+    margin: 3%;
+    padding: 3%;
+
+}
+
+.newGameBtn:hover {
+    background-color: var(--cell-color);
+    cursor: pointer;
 }
 
 /* Modal styles */
 .modal {
-    display: flex;
+    display: flex;  /* Change this to flex, only set as none for development purposes */
     position: fixed; /* Stay in place */
     z-index: 1; /* Sit on top */
     margin: auto;
     width: 100%; /* Full width */
     height: 100%; /* Full height */
-    background-color: rgba(33, 33, 33, 0.7); /* Fallback color */
+    background-color: var(--modal-background-color);
     padding: 15px;
-
-
 }
 
 
-
 .modal-content {
-
     padding: 20px;
-    background-color: white;
+    background-color: var(--modal-main-color);
     margin: auto;
     display: flex;
     flex-direction: column;
@@ -193,7 +214,6 @@ body {
     gap: 15px;
 }
 
-
 .modal-content > p {
     text-align: center;
 }
@@ -206,10 +226,9 @@ body {
 }
 
 .name-input {
-    appearance: none;
-    border: 1px solid var(--cell-color);
+    border: 1px solid var(--input-border-color);
     border-radius: 3px;
-    color: var(--background-color);
+    color: var(--btn-background-color);
 }
 
 
@@ -219,14 +238,62 @@ body {
     border: none;
     border-radius: 5%;
     padding: 5px;
-    background-color: var(--background-color);
-    color: white;
+    background-color: var(--btn-background-color);
+    color: var(--btn-text-color);
 }
 
 .modal-start:hover {
-    background-color: var(--cell-color);
+    background-color: var(--btn-hover-color);
     cursor: pointer;
 }
+
+.playAgainModal {
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--modal-background-color);
+}
+
+.play-again-content {
+    width: fit-content;
+    height: fit-content;
+    background-color: var(--modal-main-color);
+    padding: 20px;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+
+}
+
+.play-again-btns {
+    width: 80%;
+    height: fit-content;
+    display: flex;
+    justify-content: space-evenly;
+
+
+}
+
+.play-again-btn {
+    width: 80px;
+    height: 30px;
+    border: none;
+    border-radius: 3px;
+    background-color: var(--btn-background-color);
+    color: var(--btn-text-color);
+}
+
+.play-again-btn:hover {
+    background-color: var(--btn-hover-color);
+    cursor: pointer;
+}
+
+
 
 
 

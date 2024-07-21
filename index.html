@@ -6,11 +6,10 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="./styles.css">
-
+    <script src="https://kit.fontawesome.com/23dcbae236.js" crossorigin="anonymous"></script>
     <title>Tic Tac Toe</title>
 </head>
 <body>
-    div.
 
 
     <div class="main-container">
@@ -33,21 +32,15 @@
         </div>
 
         <div class="score-container">
-            <h1 class="score-header">X: <span class="pOneName">Player 1</span></h1>
+            <h1 class="score-header">X: <span class="pOneName"></span></h1>
             <h1 class="score-header">Draw</h1>
-            <h1 class="score-header">O: <span class="pTwoName">Player 2</span></h1>
-
+            <h1 class="score-header">O: <span class="pTwoName"></span></h1>
             <h2 class="score-text p1Score">0</h2>
             <h2 class="score-text drawScore">0</h2>
             <h2 class="score-text p2Score">0</h2>
 
             <button class="newGameBtn">New Game</button>
-
         </div>
-
-
-
-
     </div>
 
     <div class="modal" id="namesModal">
@@ -58,25 +51,27 @@
             <form action="" class="modal-form">
                 <div class="name-container">
                     <label for="player-x-name-input">Player X: </label>
-                    <input type="text" id="player-x-name-input" name="player-x-name-input" class="name-input" required>
+                    <input type="text" id="player-x-name-input" name="player-x-name-input" class="name-input" maxlength="10" required>
                 </div>
 
                 <div class="name-container">
                     <label for="player-o-name-input">Player O: </label>
-                    <input type="text" id="player-o-name-input" name="player-o-name-input" class="name-input" required>
+                    <input type="text" id="player-o-name-input" name="player-o-name-input" class="name-input" maxlength="10" required>
                 </div>
 
                 <button type="submit" class="modal-start">Start Game</button>
 
             </form>
+        </div>
+    </div>
 
-
-
-
-
-
-
-
+    <div class="playAgainModal">
+        <div class="play-again-content">
+            <p><span class="winner">Nick</span> wins the game! Play again?</p>
+            <div class="play-again-btns">
+                <button class="play-again-yes play-again-btn">Yes</button>
+                <button class="play-again-no play-again-btn">No</button>
+            </div>
         </div>
     </div>
 

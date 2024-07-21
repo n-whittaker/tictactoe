@@ -26,8 +26,9 @@ const gameController = (function() {
     let draws = 0;
 
     const playGame = () => {
-        displayController.showModal();
+        displayController.showNameModal();
         displayController.resetDisplay();
+
         activePlayer = 1;
         playRound();
 
@@ -37,27 +38,22 @@ const gameController = (function() {
 
     }
 
-    const askNewGame = () => {
-        if (confirm(`Would you like to play again?`)) {
-            playGame();
-        } else {
-            displayController.resetDisplay();
-            displayController.updateDisplay();
-        }
+    const askNewGame = (winner) => {
+        displayController.showPlayAgain(winner)
     }
 
     const checkGameWin = () => {
         if (player1.score === 3) {
             displayController.displayMsg(`${player1.playerName} wins the game!`);
             setTimeout(() => {
-                askNewGame();
+                askNewGame(player1.playerName);
             }, 200)
 
 
         } else if (player2.score === 3){
             displayController.displayMsg(`${player2.playerName} wins the game!`);
             setTimeout(() => {
-                askNewGame();
+                askNewGame(player2.playerName);
             }, 200)
         }
     }
@@ -206,6 +202,7 @@ const displayController = (function () {
     const modal = document.querySelector(".modal");
     const player1name = document.querySelector("#player-x-name-input");
     const player2name = document.querySelector("#player-o-name-input");
+    const playAgainModal = document.querySelector(".playAgainModal");
 
 
 
@@ -213,7 +210,7 @@ const displayController = (function () {
        const cells = document.querySelectorAll(".cell");
 
        cells.forEach((cell, index) => {
-           cell.textContent = gameBoard.board[index] === 0 ? "" : (gameBoard.board[index] === 1 ? "X" : "O");
+           cell.textContent = gameBoard.board[index] === 0 ? "" : (gameBoard.board[index] === 1 ? `X` : "O");
        })
 
 
@@ -228,8 +225,8 @@ const displayController = (function () {
         const buttons = document.querySelectorAll(".cell");
         const modal = document.querySelector(".modal");
         const modalForm = document.querySelector(".modal-form");
-
-
+        const playAgainYes = document.querySelector(".play-again-yes");
+        const playAgainNo = document.querySelector(".play-again-no");
 
        buttons.forEach((btn) =>{
            btn.addEventListener("click", (event) => {
@@ -241,23 +238,35 @@ const displayController = (function () {
 
        newGameBtn.addEventListener("click", () => {
            gameController.playGame();
+           console.log("button clicked");
+
+           buttons.forEach((btn) =>{
+               btn.disabled = false;
+           })
        })
 
        modalForm.addEventListener("submit", (event) => {
-           event.preventDefault()  // SUbmitting form was reloading page by default
-
-
-
-
+           event.preventDefault()  // Submitting form was reloading page by default
            gameController.createPlayers(player1name.value, player2name.value);
-
            modal.style.display = "none";
+       })
+
+       playAgainYes.addEventListener("click", () => {
+           playAgainModal.style.display = "none";
+           resetDisplay();
+           gameController.playGame();
 
 
        })
 
+       playAgainNo.addEventListener("click", () => {
+           playAgainModal.style.display = "none";
+           resetDisplay();
 
-
+           buttons.forEach((btn) =>{
+               btn.disabled = true;
+           })
+       })
     }
 
     const showTurn = (activePlayer) => {
@@ -287,9 +296,7 @@ const displayController = (function () {
         p1Score.textContent = "0";
         p2Score.textContent = "0";
         drawScore.textContent = "0";
-        displayMsg("First to 3 wins!")
-
-
+        displayMsg("First to 3 wins!");
     }
 
     const displayMsg = (message) => {
@@ -297,23 +304,27 @@ const displayController = (function () {
         msgBox.textContent = message;
     }
 
-    const showModal = () => {
+    const showNameModal = () => {
         player1name.value = "";
         player2name.value = "";
         modal.style.display = "flex";
+    }
 
+
+    const showPlayAgain = (winner) => {
+        const resultText = document.querySelector(".winner");
+        resultText.textContent = winner;
+        playAgainModal.style.display = "flex";
     }
 
 
 
 
 
-
-   return {updateDisplay, addEventListeners, showTurn, changeNames, updateScore, resetDisplay, displayMsg, showModal}
+   return {updateDisplay, addEventListeners, showTurn, changeNames, updateScore, resetDisplay, displayMsg, showNameModal, showPlayAgain}
 
 })();
 
-// gameController.playGame();
 displayController.addEventListeners();
 
 
